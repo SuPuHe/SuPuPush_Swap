@@ -274,80 +274,6 @@ int	ft_input_check(int argc, char **argv, t_stack **a)
 	return (0);
 }
 
-
-// void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
-// {
-// 	int	i;
-// 	int	half;
-
-// 	half = (argc - 1) / 2;
-// 	i = 0;
-// 	while (i < half)
-// 	{
-// 		pb(a, b);
-// 		i++;
-// 	}
-// 	// if ((*a)->value > (*a)->next->value && (*b)->value > (*b)->next->value)
-// 	// {
-// 	// 	ss(a, b);
-// 	// }
-// 	// if ((*b)->value > (*b)->next->value)
-// 	// 	sb(b);
-// 	// for (int j = 0; j < 100; j++)
-// 	// {
-// 	// 	if ((*a)->value > (*a)->next->value)
-// 	// 		sa(a);
-// 	// 	ra(a);
-// 	// }
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*b)->value > (*b)->next->value)
-// 		sb(b);
-// 	rrb(b);
-// 	if ((*b)->value > (*b)->next->value)
-// 		sb(b);
-// 	rrb(b);
-// 	if ((*b)->value > (*b)->next->value)
-// 		sb(b);
-// 	rrb(b);
-// 	// if ((*a)->value > (*b)->value)
-// 	// 	pa(a, b);
-// 	// ra(a);
-// 	// if ((*b)->value > (*b)->next->value)
-// 	// 	sb(b);
-// }
-
 int	ft_is_sorted(t_stack *stack)
 {
 	while(stack && stack->next)
@@ -357,61 +283,6 @@ int	ft_is_sorted(t_stack *stack)
 		stack = stack->next;
 	}
 	return (1);
-}
-
-int	ft_is_sorted_desc(t_stack *stack)
-{
-	while (stack && stack->next)
-	{
-		if (stack->value < stack->next->value)
-			return (0);
-		stack = stack->next;
-	}
-	return (1);
-}
-
-int	should_rotate_up(t_stack *stack)
-{
-	t_stack	*max;
-	int		pos;
-	int		i;
-
-	pos = 0;
-	i = 0;
-	max = stack;
-	while (stack)
-	{
-		if (stack->value > max->value)
-		{
-			max = stack;
-			pos = i;
-		}
-		stack = stack->next;
-		i++;
-	}
-	return (pos <= i / 2);
-}
-
-int	should_rotate_down(t_stack *stack)
-{
-	t_stack	*max;
-	int		pos;
-	int i;
-
-	pos = 0;
-	i = 0;
-	max = stack;
-	while (stack)
-	{
-		if (stack->value > max->value)
-		{
-			max = stack;
-			pos = i;
-		}
-		stack = stack->next;
-		i++;
-	}
-	return (pos >= i / 2);
 }
 
 void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
@@ -449,15 +320,61 @@ void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
 		j++;
 		if (j == i)
 			j = 0;
+		ft_printf("HERE\n");
 	}
-	ft_printf("J=%d", j);
-	// while((*b))
-	// {
-	// 	if ((*b)->value < min)
-	// }
+	ft_printf("J=%d\n", j);
+	j = 0;
+	while((*b))
+	{
+		if (i % 2 != 0)
+			odd = 1;
+		if ((*b)->value < min && (*a)->value == min)
+		{
+			pa(a, b);
+			i++;
+			min = (*a)->value;
+			continue;
+		}
+		if ((*b)->value > max && (*a)->value == max)
+		{
+			ra(a);
+			j = 0;
+			pa(a, b);
+			i++;
+			max = (*a)->value;
+			continue;
+		}
+		if ((*b)->value > (*a)->value && (*b)->value < (*a)->next->value)
+		{
+			ra(a);
+			j = 0;
+			pa(a, b);
+			i++;
+			continue;
+		}
+		// if ((*b)->value < (*a)->value && (*b)->value > (*a)->next->value)
+		// {
+		// 	ra(a);
+		// 	j++;
+		// 	pa(a, b);
+		// 	i++;
+		// }
+		if (j < i / 2 + odd)
+			rra(a);
+		else
+			ra(a);
+		j++;
+		if (j == i)
+			j = 0;
+	}
 }
 
-
+// a               b
+// 243             894
+// 383             966
+// 517             177
+// 572             697
+// 795             447
 
 // a               b
 // 795             894
@@ -471,6 +388,7 @@ int	main(int argc, char **argv)
 	t_stack	*b;
 
 	b = NULL;
+	a = NULL;
 	if (argc < 2)
 		return (ft_printf("Error_less then 2 argc\n"), 1);
 	if (ft_input_check(argc, argv, &a) == 1)
