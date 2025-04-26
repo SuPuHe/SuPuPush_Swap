@@ -480,11 +480,91 @@ int find_insert_position(t_stack *a, int num)
 	return 0;
 }
 
+t_cost calculate_cost(t_stack *a, t_stack *b)
+{
+	t_stack *current_b = b;
+	int b_size = ft_stack_size(b);
+	int a_size = ft_stack_size(a);
+	int idx_b = 0;
+	t_cost best_move;
+	best_move.total = 2147483647;
+
+	while (current_b)
+	{
+		int cost_b;
+		if (idx_b <= b_size / 2)
+			cost_b = idx_b;
+		else
+			cost_b = -(b_size - idx_b);
+		int pos_in_a = find_insert_position(a, current_b->value);
+		int cost_a;
+		if (pos_in_a <= a_size / 2)
+			cost_a = pos_in_a;
+		else
+			cost_a = -(a_size - pos_in_a);
+
+		int total = abs(cost_a) + abs(cost_b);
+
+		if (total < best_move.total)
+		{
+			best_move.total = total;
+			best_move.cost_a = cost_a;
+			best_move.cost_b = cost_b;
+			best_move.node = current_b;
+		}
+
+		idx_b++;
+		current_b = current_b->next;
+	}
+	return best_move;
+}
+
+void do_moves(t_stack **a, t_stack **b, t_cost move)
+{
+	int cost_a = move.cost_a;
+	int cost_b = move.cost_b;
+
+	while (cost_a > 0 && cost_b > 0)
+	{
+		rr(a, b);
+		cost_a--;
+		cost_b--;
+	}
+	while (cost_a < 0 && cost_b < 0)
+	{
+		rrr(a, b);
+		cost_a++;
+		cost_b++;
+	}
+	while (cost_a > 0)
+	{
+		ra(a);
+		cost_a--;
+	}
+	while (cost_a < 0)
+	{
+		rra(a);
+		cost_a++;
+	}
+	while (cost_b > 0)
+	{
+		rb(b);
+		cost_b--;
+	}
+	while (cost_b < 0)
+	{
+		rrb(b);
+		cost_b++;
+	}
+	pa(a, b);
+}
+
 void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
 {
 	int i = 0;
 	t_stack *tmp;
 	int min;
+
 	while (i < argc - 3)
 	{
 		pb(a, b);
@@ -492,23 +572,12 @@ void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
 	}
 	if ((*a)->value > (*a)->next->value)
 		sa(a);
+	if (!ft_is_sorted(*a))
+		ra(a);
 	while (*b)
 	{
-		int pos;
-		int size_a = ft_stack_size(*a);
-		pos = find_insert_position(*a, (*b)->value);
-		if (pos <= size_a / 2)
-		{
-			while (pos--)
-				ra(a);
-		}
-		else
-		{
-			pos = size_a - pos;
-			while (pos--)
-				rra(a);
-		}
-		pa(a, b);
+		t_cost move = calculate_cost(*a, *b);
+		do_moves(a, b, move);
 	}
 	tmp = *a;
 	min = tmp->value;
