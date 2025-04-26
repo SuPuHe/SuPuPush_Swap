@@ -477,7 +477,7 @@ int find_insert_position(t_stack *a, int num)
 		current = current->next;
 		pos++;
 	}
-	return 0;
+	return (0);
 }
 
 t_cost calculate_cost(t_stack *a, t_stack *b)
@@ -502,9 +502,27 @@ t_cost calculate_cost(t_stack *a, t_stack *b)
 			cost_a = pos_in_a;
 		else
 			cost_a = -(a_size - pos_in_a);
-
-		int total = abs(cost_a) + abs(cost_b);
-
+		int total_a;
+		if (cost_a < 0)
+			total_a = -cost_a;
+		else
+			total_a = cost_a;
+		int total_b;
+		if (cost_b < 0)
+			total_b = -cost_b;
+		else
+			total_b = cost_b;
+		int total = total_a + total_b;
+		if (cost_a > 0 && cost_b > 0)
+		{
+			if (total > total_a + total_b)
+				total = total_a + total_b;
+		}
+		if (cost_a < 0 && cost_b < 0)
+		{
+			if (total > total_a + total_b)
+				total = total_a + total_b;
+		}
 		if (total < best_move.total)
 		{
 			best_move.total = total;
@@ -512,11 +530,10 @@ t_cost calculate_cost(t_stack *a, t_stack *b)
 			best_move.cost_b = cost_b;
 			best_move.node = current_b;
 		}
-
 		idx_b++;
 		current_b = current_b->next;
 	}
-	return best_move;
+	return (best_move);
 }
 
 void do_moves(t_stack **a, t_stack **b, t_cost move)
