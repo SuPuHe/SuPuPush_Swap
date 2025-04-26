@@ -382,62 +382,159 @@ void	ft_sort_three(t_stack **a)
 		rra(a);
 }
 
+// void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
+// {
+// 	int		chunk_size;
+// 	int		pushed;
+// 	int		count;
+// 	int		total = argc - 1;
+// 	int		*sorted_arr;
+// 	int		chunk_max;
+
+// 	sorted_arr = stack_to_array(*a, total);
+// 	if (!sorted_arr)
+// 		return;
+// 	ft_sort_array(sorted_arr, total);
+
+// 	chunk_size = total / 5;
+// 	pushed = 0;
+// 	chunk_max = sorted_arr[chunk_size - 1];
+
+// 	while (ft_stack_size(*a) > 3)
+// 	{
+// 		count = 0;
+// 		while (pushed < chunk_size && count < ft_stack_size(*a))
+// 		{
+// 			if ((*a)->value <= chunk_max)
+// 			{
+// 				pb(a, b);
+// 				pushed++;
+// 				count = 0;
+// 			}
+// 			else
+// 			{
+// 				ra(a);
+// 				count++;
+// 			}
+// 		}
+// 		if (chunk_size < total)
+// 			chunk_max = sorted_arr[chunk_size++];
+// 	}
+// 	ft_sort_three(a);
+// 	while (*b)
+// 	{
+// 		int max_index = find_max_index(*b);
+// 		int b_size = ft_stack_size(*b);
+// 		if (max_index <= b_size / 2)
+// 		{
+// 			while (max_index-- > 0)
+// 				rb(b);
+// 		}
+// 		else
+// 		{
+// 			while (max_index++ < b_size)
+// 				rrb(b);
+// 		}
+// 		pa(a, b);
+// 	}
+// 	free(sorted_arr);
+// }
+
+int find_insert_position(t_stack *a, int num)
+{
+	int pos = 0;
+	t_stack *current = a;
+	t_stack *tmp = a;
+	int min = tmp->value;
+	int max = tmp->value;
+	while (tmp)
+	{
+		if (tmp->value < min)
+			min = tmp->value;
+		if (tmp->value > max)
+			max = tmp->value;
+		tmp = tmp->next;
+	}
+	if (num < min || num > max)
+	{
+		pos = 0;
+		tmp = a;
+		while (tmp)
+		{
+			if (tmp->value == max)
+				break;
+			pos++;
+			tmp = tmp->next;
+		}
+		return (pos + 1);
+	}
+	pos = 0;
+	current = a;
+	while (current && current->next)
+	{
+		if (num > current->value && num < current->next->value)
+			return (pos + 1);
+		current = current->next;
+		pos++;
+	}
+	return 0;
+}
+
 void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
 {
-	int		chunk_size;
-	int		pushed;
-	int		count;
-	int		total = argc - 1;
-	int		*sorted_arr;
-	int		chunk_max;
-
-	sorted_arr = stack_to_array(*a, total);
-	if (!sorted_arr)
-		return;
-	ft_sort_array(sorted_arr, total);
-
-	chunk_size = total / 5;
-	pushed = 0;
-	chunk_max = sorted_arr[chunk_size - 1];
-
-	while (ft_stack_size(*a) > 3)
+	int i = 0;
+	t_stack *tmp;
+	int min;
+	while (i < argc - 3)
 	{
-		count = 0;
-		while (pushed < chunk_size && count < ft_stack_size(*a))
-		{
-			if ((*a)->value <= chunk_max)
-			{
-				pb(a, b);
-				pushed++;
-				count = 0;
-			}
-			else
-			{
-				ra(a);
-				count++;
-			}
-		}
-		if (chunk_size < total)
-			chunk_max = sorted_arr[chunk_size++];
+		pb(a, b);
+		i++;
 	}
-	ft_sort_three(a);
+	if ((*a)->value > (*a)->next->value)
+		sa(a);
 	while (*b)
 	{
-		int max_index = find_max_index(*b);
-		int b_size = ft_stack_size(*b);
-		if (max_index <= b_size / 2)
+		int pos;
+		int size_a = ft_stack_size(*a);
+		pos = find_insert_position(*a, (*b)->value);
+		if (pos <= size_a / 2)
 		{
-			while (max_index-- > 0)
-				rb(b);
+			while (pos--)
+				ra(a);
 		}
 		else
 		{
-			while (max_index++ < b_size)
-				rrb(b);
+			pos = size_a - pos;
+			while (pos--)
+				rra(a);
 		}
 		pa(a, b);
 	}
-	free(sorted_arr);
+	tmp = *a;
+	min = tmp->value;
+	int min_index = 0, idx = 0;
+	while (tmp)
+	{
+		if (tmp->value < min)
+		{
+			min = tmp->value;
+			min_index = idx;
+		}
+		tmp = tmp->next;
+		idx++;
+	}
+	int size_a = ft_stack_size(*a);
+	if (min_index <= size_a / 2)
+	{
+		while (min_index--)
+			ra(a);
+	}
+	else
+	{
+		min_index = size_a - min_index;
+		while (min_index--)
+			rra(a);
+	}
 }
 
 
