@@ -148,7 +148,7 @@ void	pb(t_stack **a, t_stack **b)
 	ft_printf("pb\n");
 }
 
-void	ra(t_stack **a)
+void	ra(t_stack **a, int helper)
 {
 	t_stack	*first;
 	t_stack	*last;
@@ -162,10 +162,11 @@ void	ra(t_stack **a)
 	while (last->next)
 		last = last->next;
 	last->next = first;
-	ft_printf("ra\n");
+	if (helper == 0)
+		ft_printf("ra\n");
 }
 
-void	rb(t_stack **b)
+void	rb(t_stack **b, int helper)
 {
 	t_stack	*first;
 	t_stack	*last;
@@ -179,17 +180,18 @@ void	rb(t_stack **b)
 	while (last->next)
 		last = last->next;
 	last->next = first;
-	ft_printf("rb\n");
+	if (helper == 0)
+		ft_printf("rb\n");
 }
 
 void	rr(t_stack **a, t_stack **b)
 {
-	ra(a);
-	rb(b);
+	ra(a, 1);
+	rb(b, 1);
 	ft_printf("rr\n");
 }
 
-void	rra(t_stack **a)
+void	rra(t_stack **a, int helper)
 {
 	t_stack	*prev;
 	t_stack	*last;
@@ -206,10 +208,11 @@ void	rra(t_stack **a)
 	prev->next = NULL;
 	last->next = *a;
 	*a = last;
-	ft_printf("rra\n");
+	if (helper == 0)
+		ft_printf("rra\n");
 }
 
-void	rrb(t_stack **b)
+void	rrb(t_stack **b, int helper)
 {
 	t_stack	*prev;
 	t_stack	*last;
@@ -226,13 +229,14 @@ void	rrb(t_stack **b)
 	prev->next = NULL;
 	last->next = *b;
 	*b = last;
-	ft_printf("rrb\n");
+	if (helper == 0)
+		ft_printf("rrb\n");
 }
 
 void	rrr(t_stack **a, t_stack **b)
 {
-	rra(a);
-	rrb(b);
+	rra(a, 1);
+	rrb(b, 1);
 	ft_printf("rrr\n");
 }
 
@@ -316,6 +320,26 @@ int	find_max_index(t_stack *stack)
 	return (index);
 }
 
+int	find_min_index(t_stack *stack)
+{
+	int		min = stack->value;
+	int		index = 0;
+	int		i = 0;
+	t_stack	*tmp = stack;
+
+	while (tmp)
+	{
+		if (tmp->value < min)
+		{
+			min = tmp->value;
+			index = i;
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	return (index);
+}
+
 void	ft_sort_array(int *arr, int size)
 {
 	int	i, j, tmp;
@@ -369,76 +393,18 @@ void	ft_sort_three(t_stack **a)
 	else if (first > second && second > third)
 	{
 		sa(a);
-		rra(a);
+		rra(a, 0);
 	}
 	else if (first > second && second < third && first > third)
-		ra(a);
+		ra(a, 0);
 	else if (first < second && second > third && first < third)
 	{
 		sa(a);
-		ra(a);
+		ra(a, 0);
 	}
 	else if (first < second && second > third && first > third)
-		rra(a);
+		rra(a, 0);
 }
-
-// void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
-// {
-// 	int		chunk_size;
-// 	int		pushed;
-// 	int		count;
-// 	int		total = argc - 1;
-// 	int		*sorted_arr;
-// 	int		chunk_max;
-
-// 	sorted_arr = stack_to_array(*a, total);
-// 	if (!sorted_arr)
-// 		return;
-// 	ft_sort_array(sorted_arr, total);
-
-// 	chunk_size = total / 5;
-// 	pushed = 0;
-// 	chunk_max = sorted_arr[chunk_size - 1];
-
-// 	while (ft_stack_size(*a) > 3)
-// 	{
-// 		count = 0;
-// 		while (pushed < chunk_size && count < ft_stack_size(*a))
-// 		{
-// 			if ((*a)->value <= chunk_max)
-// 			{
-// 				pb(a, b);
-// 				pushed++;
-// 				count = 0;
-// 			}
-// 			else
-// 			{
-// 				ra(a);
-// 				count++;
-// 			}
-// 		}
-// 		if (chunk_size < total)
-// 			chunk_max = sorted_arr[chunk_size++];
-// 	}
-// 	ft_sort_three(a);
-// 	while (*b)
-// 	{
-// 		int max_index = find_max_index(*b);
-// 		int b_size = ft_stack_size(*b);
-// 		if (max_index <= b_size / 2)
-// 		{
-// 			while (max_index-- > 0)
-// 				rb(b);
-// 		}
-// 		else
-// 		{
-// 			while (max_index++ < b_size)
-// 				rrb(b);
-// 		}
-// 		pa(a, b);
-// 	}
-// 	free(sorted_arr);
-// }
 
 int find_insert_position(t_stack *a, int num)
 {
@@ -555,88 +521,101 @@ void do_moves(t_stack **a, t_stack **b, t_cost move)
 	}
 	while (cost_a > 0)
 	{
-		ra(a);
+		ra(a, 0);
 		cost_a--;
 	}
 	while (cost_a < 0)
 	{
-		rra(a);
+		rra(a, 0);
 		cost_a++;
 	}
 	while (cost_b > 0)
 	{
-		rb(b);
+		rb(b, 0);
 		cost_b--;
 	}
 	while (cost_b < 0)
 	{
-		rrb(b);
+		rrb(b, 0);
 		cost_b++;
 	}
 	pa(a, b);
 }
 
-void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
+void	final_rotation(t_stack **a)
 {
-	int i = 0;
-	t_stack *tmp;
-	int min;
+	int min_index = find_min_index(*a);
+	int size_a = ft_stack_size(*a);
 
-	while (i < argc - 3)
-	{
-		pb(a, b);
-		i++;
-	}
-	if ((*a)->value > (*a)->next->value)
-		sa(a);
-	if (!ft_is_sorted(*a))
-		ra(a);
+	if (min_index <= size_a / 2)
+		while (min_index--)
+			ra(a, 0);
+	else
+		while (min_index++ < size_a)
+			rra(a, 0);
+}
+
+void	push_back_to_a(t_stack **a, t_stack **b)
+{
 	while (*b)
 	{
 		t_cost move = calculate_cost(*a, *b);
 		do_moves(a, b, move);
 	}
-	tmp = *a;
-	min = tmp->value;
-	int min_index = 0, idx = 0;
-	while (tmp)
+}
+
+void	free_stack(t_stack **stack)
+{
+	t_stack	*tmp;
+	while (*stack)
 	{
-		if (tmp->value < min)
-		{
-			min = tmp->value;
-			min_index = idx;
-		}
-		tmp = tmp->next;
-		idx++;
-	}
-	int size_a = ft_stack_size(*a);
-	if (min_index <= size_a / 2)
-	{
-		while (min_index--)
-			ra(a);
-	}
-	else
-	{
-		min_index = size_a - min_index;
-		while (min_index--)
-			rra(a);
+		tmp = *stack;
+		*stack = (*stack)->next;
+		free(tmp);
 	}
 }
 
+void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
+{
+	int	*sorted_array;
+	int	chunk_size;
+	int	chunk_max;
+	int	total;
+	int	pushed;
 
-// a               b
-// 243             894
-// 383             966
-// 517             177
-// 572             697
-// 795             447
+	total = argc - 1;
+	sorted_array = stack_to_array(*a, total);
+	ft_sort_array(sorted_array, total);
+	if (total <= 100)
+		chunk_size = total / 4;
+	else
+		chunk_size = total / 5;
+	pushed = 0;
+	int i = 0;
+	while (i < total)
+	{
+		chunk_max = sorted_array[i + chunk_size - 1];
+		while (pushed < i + chunk_size && ft_stack_size(*a) > 3)
+		{
+			if ((*a)->value <= chunk_max)
+			{
+				pb(a, b);
+				pushed++;
+			}
+			else
+				ra(a, 0);
+		}
+		i += chunk_size;
+	}
+	free(sorted_array);
+	ft_sort_three(a);
+	push_back_to_a(a, b);
+	final_rotation(a);
+}
 
-// a               b
-// 795             894
-// 243             966
-// 572             177
-// 383             697
-// 517             447
+//672 4979
+//640 4527
+
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
@@ -649,6 +628,8 @@ int	main(int argc, char **argv)
 	if (ft_input_check(argc, argv, &a) == 1)
 		return (1);
 	ft_beggin_sorting(&a, &b, argc);
-	print_stack(a, b);
+	//print_stack(a, b);
+	free_stack(&a);
+	free_stack(&b);
 	return (0);
 }
