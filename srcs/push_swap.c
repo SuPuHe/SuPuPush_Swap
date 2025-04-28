@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 10:52:41 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/28 11:15:19 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/28 13:28:31 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	print_stack(t_stack *a, t_stack *b)
 		ft_printf("\n");
 	}
 }
-
 
 void	sa(t_stack **a)
 {
@@ -575,58 +574,107 @@ void	free_stack(t_stack **stack)
 	}
 }
 
-void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
+void ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
 {
-	int	*sorted_array;
-	int	chunk_size;
-	int	chunk_max;
-	int	total;
-	int	pushed;
-	int	i;
-	int	rotations;
+	int *sorted_array;
+	int chunk_size;
+	int chunk_min;
+	int chunk_max;
+	int total;
+	int pushed;
+	int i;
+	int median;
 
 	total = argc - 1;
-	sorted_array = stack_to_array(*a, total);
+	if (!*a || !(sorted_array = stack_to_array(*a, total)))
+		return;
 	ft_sort_array(sorted_array, total);
-
+	median = sorted_array[total / 2];
 	if (total <= 100)
 		chunk_size = total / 5;
+	else if (total <= 500)
+		chunk_size = total / 8;
 	else
-		chunk_size = total / 5;
+		chunk_size = total / 11;
 	pushed = 0;
 	i = 0;
-	while (pushed < total - 3)
+	while (*a && pushed < total / 2)
 	{
+		if ((*a)->value < median)
+		{
+			pb(a, b);
+			pushed++;
+			if (*b && (*b)->value < sorted_array[total / 4])
+				rb(b, 0);
+		}
+		else
+			ra(a, 0);
+	}
+	pushed = total / 2;
+	while (*a && pushed < total - 3)
+	{
+		chunk_min = sorted_array[i];
 		if (i + chunk_size - 1 >= total)
 			chunk_max = sorted_array[total - 1];
 		else
 			chunk_max = sorted_array[i + chunk_size - 1];
-
-		rotations = 0;
-		while (rotations < ft_stack_size(*a) && pushed < total - 3)
+		while (*a)
 		{
-			if ((*a)->value <= chunk_max)
+			int found = 0;
+			int size = ft_stack_size(*a);
+			t_stack *tmp = *a;
+			int top_dist = 0;
+			while (tmp)
 			{
-				pb(a, b);
-				pushed++;
+				if (tmp->value >= chunk_min && tmp->value <= chunk_max)
+				{
+					found = 1;
+					break;
+				}
+				top_dist++;
+				tmp = tmp->next;
+			}
+			if (!found)
+				break;
+			if (top_dist <= size / 2)
+			{
+				while (top_dist-- > 0 && *a)
+					ra(a, 0);
 			}
 			else
 			{
-				ra(a, 0);
-				rotations++;
+				top_dist = size - top_dist;
+				while (top_dist-- > 0 && *a)
+					rra(a, 0);
+			}
+			if (*a)
+			{
+				pb(a, b);
+				pushed++;
+				if (pushed >= total - 3)
+					break;
+				if (*b && (*b)->value < median &&
+					(*b)->next && (*b)->value < (*b)->next->value)
+					rb(b, 0);
 			}
 		}
 		i += chunk_size;
 	}
 	free(sorted_array);
-	ft_sort_three(a);
-	push_back_to_a(a, b);
-	final_rotation(a);
+	if (*a && ft_stack_size(*a) == 3)
+		ft_sort_three(a);
+	if (*b)
+		push_back_to_a(a, b);
+	if (*a)
+		final_rotation(a);
 }
+
 
 //672 4979
 //640 4527
 
+
+//./push_swap 792517 236241 567811 30810 366999 539143 910778 832234 720003 655380 474070 997208 382154 214190 829348 643905 430156 270029 197359 351947 371271 143473 268608 715651 493912 232139 571785 966861 729703 796877 28720 834011 370663 877194 550184 63741 72723 274193 733545 917691 600405 28023 945957 410561 703404 349812 660100 3603 796175 939339 594959 490335 203874 545153 885040 995091 5653 388292 303316 134584 394658 594311 694238 538200 922386 697678 697235 299804 370725 854701 271054 154142 865561 225155 947099 149227 247248 932833 337814 500627 659762 164418 632377 892638 819182 610098 718253 381574 206783 126821 691028 847931 115220 731102 625407 607510 640003 657586 656466 593077 | wc -l
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
