@@ -23,4 +23,12 @@ typedef struct s_stack
 	struct s_stack		*next;
 }	t_stack;
 
+typedef struct s_cost
+{
+	int		cost_a;
+	int		cost_b;
+	int		total;
+	t_stack	*node;
+}	t_cost;
+
 #endif
