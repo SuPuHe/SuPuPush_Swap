@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 10:52:41 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/24 11:51:50 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/28 11:15:19 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void	pb(t_stack **a, t_stack **b)
 	ft_printf("pb\n");
 }
 
-void	ra(t_stack **a)
+void	ra(t_stack **a, int helper)
 {
 	t_stack	*first;
 	t_stack	*last;
@@ -162,10 +162,11 @@ void	ra(t_stack **a)
 	while (last->next)
 		last = last->next;
 	last->next = first;
-	ft_printf("ra\n");
+	if (helper == 0)
+		ft_printf("ra\n");
 }
 
-void	rb(t_stack **b)
+void	rb(t_stack **b, int helper)
 {
 	t_stack	*first;
 	t_stack	*last;
@@ -179,17 +180,18 @@ void	rb(t_stack **b)
 	while (last->next)
 		last = last->next;
 	last->next = first;
-	ft_printf("rb\n");
+	if (helper == 0)
+		ft_printf("rb\n");
 }
 
 void	rr(t_stack **a, t_stack **b)
 {
-	ra(a);
-	rb(b);
+	ra(a, 1);
+	rb(b, 1);
 	ft_printf("rr\n");
 }
 
-void	rra(t_stack **a)
+void	rra(t_stack **a, int helper)
 {
 	t_stack	*prev;
 	t_stack	*last;
@@ -206,10 +208,11 @@ void	rra(t_stack **a)
 	prev->next = NULL;
 	last->next = *a;
 	*a = last;
-	ft_printf("rra\n");
+	if (helper == 0)
+		ft_printf("rra\n");
 }
 
-void	rrb(t_stack **b)
+void	rrb(t_stack **b, int helper)
 {
 	t_stack	*prev;
 	t_stack	*last;
@@ -226,13 +229,14 @@ void	rrb(t_stack **b)
 	prev->next = NULL;
 	last->next = *b;
 	*b = last;
-	ft_printf("rrb\n");
+	if (helper == 0)
+		ft_printf("rrb\n");
 }
 
 void	rrr(t_stack **a, t_stack **b)
 {
-	rra(a);
-	rrb(b);
+	rra(a, 1);
+	rrb(b, 1);
 	ft_printf("rrr\n");
 }
 
@@ -274,80 +278,6 @@ int	ft_input_check(int argc, char **argv, t_stack **a)
 	return (0);
 }
 
-
-// void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
-// {
-// 	int	i;
-// 	int	half;
-
-// 	half = (argc - 1) / 2;
-// 	i = 0;
-// 	while (i < half)
-// 	{
-// 		pb(a, b);
-// 		i++;
-// 	}
-// 	// if ((*a)->value > (*a)->next->value && (*b)->value > (*b)->next->value)
-// 	// {
-// 	// 	ss(a, b);
-// 	// }
-// 	// if ((*b)->value > (*b)->next->value)
-// 	// 	sb(b);
-// 	// for (int j = 0; j < 100; j++)
-// 	// {
-// 	// 	if ((*a)->value > (*a)->next->value)
-// 	// 		sa(a);
-// 	// 	ra(a);
-// 	// }
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	ra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*a)->value > (*a)->next->value)
-// 		sa(a);
-// 	rra(a);
-// 	if ((*b)->value > (*b)->next->value)
-// 		sb(b);
-// 	rrb(b);
-// 	if ((*b)->value > (*b)->next->value)
-// 		sb(b);
-// 	rrb(b);
-// 	if ((*b)->value > (*b)->next->value)
-// 		sb(b);
-// 	rrb(b);
-// 	// if ((*a)->value > (*b)->value)
-// 	// 	pa(a, b);
-// 	// ra(a);
-// 	// if ((*b)->value > (*b)->next->value)
-// 	// 	sb(b);
-// }
-
 int	ft_is_sorted(t_stack *stack)
 {
 	while(stack && stack->next)
@@ -359,123 +289,358 @@ int	ft_is_sorted(t_stack *stack)
 	return (1);
 }
 
-int	ft_is_sorted_desc(t_stack *stack)
+int	ft_stack_size(t_stack *stack)
 {
-	while (stack && stack->next)
-	{
-		if (stack->value < stack->next->value)
-			return (0);
-		stack = stack->next;
-	}
-	return (1);
-}
-
-int	should_rotate_up(t_stack *stack)
-{
-	t_stack	*max;
-	int		pos;
-	int		i;
-
-	pos = 0;
-	i = 0;
-	max = stack;
+	int	count = 0;
 	while (stack)
 	{
-		if (stack->value > max->value)
+		count++;
+		stack = stack->next;
+	}
+	return (count);
+}
+
+int	find_max_index(t_stack *stack)
+{
+	int		max = stack->value;
+	int		index = 0;
+	int		i = 0;
+	t_stack	*tmp = stack;
+
+	while (tmp)
+	{
+		if (tmp->value > max)
 		{
-			max = stack;
-			pos = i;
+			max = tmp->value;
+			index = i;
 		}
+		tmp = tmp->next;
+		i++;
+	}
+	return (index);
+}
+
+int	find_min_index(t_stack *stack)
+{
+	int		min = stack->value;
+	int		index = 0;
+	int		i = 0;
+	t_stack	*tmp = stack;
+
+	while (tmp)
+	{
+		if (tmp->value < min)
+		{
+			min = tmp->value;
+			index = i;
+		}
+		tmp = tmp->next;
+		i++;
+	}
+	return (index);
+}
+
+void	ft_sort_array(int *arr, int size)
+{
+	int	i, j, tmp;
+
+	i = 0;
+	while (i < size - 1)
+	{
+		j = 0;
+		while (j < size - i - 1)
+		{
+			if (arr[j] > arr[j + 1])
+			{
+				tmp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+int	*stack_to_array(t_stack *stack, int size)
+{
+	int		*arr = malloc(sizeof(int) * size);
+	int		i = 0;
+
+	if (!arr)
+		return (NULL);
+
+	while (i < size && stack)
+	{
+		arr[i] = stack->value;
 		stack = stack->next;
 		i++;
 	}
-	return (pos <= i / 2);
+	return (arr);
 }
 
-int	should_rotate_down(t_stack *stack)
+void	ft_sort_three(t_stack **a)
 {
-	t_stack	*max;
-	int		pos;
-	int i;
+	int	first;
+	int	second;
+	int	third;
 
-	pos = 0;
-	i = 0;
-	max = stack;
-	while (stack)
+	first = (*a)->value;
+	second = (*a)->next->value;
+	third = (*a)->next->next->value;
+	if (first > second && second < third && first < third)
+		sa(a);
+	else if (first > second && second > third)
 	{
-		if (stack->value > max->value)
-		{
-			max = stack;
-			pos = i;
-		}
-		stack = stack->next;
-		i++;
+		sa(a);
+		rra(a, 0);
 	}
-	return (pos >= i / 2);
+	else if (first > second && second < third && first > third)
+		ra(a, 0);
+	else if (first < second && second > third && first < third)
+	{
+		sa(a);
+		ra(a, 0);
+	}
+	else if (first < second && second > third && first > third)
+		rra(a, 0);
+}
+
+int find_insert_position(t_stack *a, int num)
+{
+	int pos = 0;
+	t_stack *current = a;
+	t_stack *tmp = a;
+	int min = tmp->value;
+	int max = tmp->value;
+	while (tmp)
+	{
+		if (tmp->value < min)
+			min = tmp->value;
+		if (tmp->value > max)
+			max = tmp->value;
+		tmp = tmp->next;
+	}
+	if (num < min || num > max)
+	{
+		pos = 0;
+		tmp = a;
+		while (tmp)
+		{
+			if (tmp->value == max)
+				break;
+			pos++;
+			tmp = tmp->next;
+		}
+		return (pos + 1);
+	}
+	pos = 0;
+	current = a;
+	while (current && current->next)
+	{
+		if (num > current->value && num < current->next->value)
+			return (pos + 1);
+		current = current->next;
+		pos++;
+	}
+	return (0);
+}
+
+t_cost calculate_cost(t_stack *a, t_stack *b)
+{
+	t_stack *current_b = b;
+	int b_size = ft_stack_size(b);
+	int a_size = ft_stack_size(a);
+	int idx_b = 0;
+	t_cost best_move;
+	best_move.total = 2147483647;
+
+	while (current_b)
+	{
+		int cost_b;
+		if (idx_b <= b_size / 2)
+			cost_b = idx_b;
+		else
+			cost_b = -(b_size - idx_b);
+		int pos_in_a = find_insert_position(a, current_b->value);
+		int cost_a;
+		if (pos_in_a <= a_size / 2)
+			cost_a = pos_in_a;
+		else
+			cost_a = -(a_size - pos_in_a);
+		int total_a;
+		if (cost_a < 0)
+			total_a = -cost_a;
+		else
+			total_a = cost_a;
+		int total_b;
+		if (cost_b < 0)
+			total_b = -cost_b;
+		else
+			total_b = cost_b;
+		int total = total_a + total_b;
+		if (cost_a > 0 && cost_b > 0)
+		{
+			if (total > total_a + total_b)
+				total = total_a + total_b;
+		}
+		if (cost_a < 0 && cost_b < 0)
+		{
+			if (total > total_a + total_b)
+				total = total_a + total_b;
+		}
+		if (total < best_move.total)
+		{
+			best_move.total = total;
+			best_move.cost_a = cost_a;
+			best_move.cost_b = cost_b;
+			best_move.node = current_b;
+		}
+		idx_b++;
+		current_b = current_b->next;
+	}
+	return (best_move);
+}
+
+void do_moves(t_stack **a, t_stack **b, t_cost move)
+{
+	int cost_a = move.cost_a;
+	int cost_b = move.cost_b;
+
+	while (cost_a > 0 && cost_b > 0)
+	{
+		rr(a, b);
+		cost_a--;
+		cost_b--;
+	}
+	while (cost_a < 0 && cost_b < 0)
+	{
+		rrr(a, b);
+		cost_a++;
+		cost_b++;
+	}
+	while (cost_a > 0)
+	{
+		ra(a, 0);
+		cost_a--;
+	}
+	while (cost_a < 0)
+	{
+		rra(a, 0);
+		cost_a++;
+	}
+	while (cost_b > 0)
+	{
+		rb(b, 0);
+		cost_b--;
+	}
+	while (cost_b < 0)
+	{
+		rrb(b, 0);
+		cost_b++;
+	}
+	pa(a, b);
+}
+
+void	final_rotation(t_stack **a)
+{
+	int min_index = find_min_index(*a);
+	int size_a = ft_stack_size(*a);
+
+	if (min_index <= size_a / 2)
+		while (min_index--)
+			ra(a, 0);
+	else
+		while (min_index++ < size_a)
+			rra(a, 0);
+}
+
+void	push_back_to_a(t_stack **a, t_stack **b)
+{
+	while (*b)
+	{
+		t_cost move = calculate_cost(*a, *b);
+		do_moves(a, b, move);
+	}
+}
+
+void	free_stack(t_stack **stack)
+{
+	t_stack	*tmp;
+	while (*stack)
+	{
+		tmp = *stack;
+		*stack = (*stack)->next;
+		free(tmp);
+	}
 }
 
 void	ft_beggin_sorting(t_stack **a, t_stack **b, int argc)
 {
+	int	*sorted_array;
+	int	chunk_size;
+	int	chunk_max;
+	int	total;
+	int	pushed;
 	int	i;
-	int	half;
+	int	rotations;
 
-	half = (argc - 1) / 2;
+	total = argc - 1;
+	sorted_array = stack_to_array(*a, total);
+	ft_sort_array(sorted_array, total);
+
+	if (total <= 100)
+		chunk_size = total / 5;
+	else
+		chunk_size = total / 5;
+	pushed = 0;
 	i = 0;
-	while (i < half)
+	while (pushed < total - 3)
 	{
-		pb(a, b);
-		i++;
-	}
-	int odd = 0;
-	if (i % 2 != 0)
-		odd = 1;
-	int j = 0;
-	int	min;
-	int	max;
-	min = (*a)->value;
-	max = (*a)->value;
-	while(!(ft_is_sorted(*a)))
-	{
-		if ((*a)->value > (*a)->next->value)
-			sa(a);
-		if ((*a)->value > max)
-			max = (*a)->value;
-		if ((*a)->value < min)
-			min = (*a)->value;
-		if (j < i / 2 + odd)
-			rra(a);
+		if (i + chunk_size - 1 >= total)
+			chunk_max = sorted_array[total - 1];
 		else
-			ra(a);
-		j++;
-		if (j == i)
-			j = 0;
+			chunk_max = sorted_array[i + chunk_size - 1];
+
+		rotations = 0;
+		while (rotations < ft_stack_size(*a) && pushed < total - 3)
+		{
+			if ((*a)->value <= chunk_max)
+			{
+				pb(a, b);
+				pushed++;
+			}
+			else
+			{
+				ra(a, 0);
+				rotations++;
+			}
+		}
+		i += chunk_size;
 	}
-	ft_printf("J=%d", j);
-	// while((*b))
-	// {
-	// 	if ((*b)->value < min)
-	// }
+	free(sorted_array);
+	ft_sort_three(a);
+	push_back_to_a(a, b);
+	final_rotation(a);
 }
 
+//672 4979
+//640 4527
 
-
-// a               b
-// 795             894
-// 243             966
-// 572             177
-// 383             697
-// 517             447
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
 	t_stack	*b;
 
 	b = NULL;
+	a = NULL;
 	if (argc < 2)
 		return (ft_printf("Error_less then 2 argc\n"), 1);
 	if (ft_input_check(argc, argv, &a) == 1)
 		return (1);
 	ft_beggin_sorting(&a, &b, argc);
 	print_stack(a, b);
+	free_stack(&a);
+	free_stack(&b);
 	return (0);
 }
