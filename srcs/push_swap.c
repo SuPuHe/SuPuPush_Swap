@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 10:52:41 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 13:57:20 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/29 16:26:28 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,48 +116,6 @@ t_cost	calculate_cost(t_stack *a, t_stack *b)
 		current_b = current_b->next;
 	}
 	return (best_move);
-}
-
-void do_moves(t_stack **a, t_stack **b, t_cost move)
-{
-	int	cost_a;
-	int	cost_b;
-
-	cost_a = move.cost_a;
-	cost_b = move.cost_b;
-	while (cost_a > 0 && cost_b > 0)
-	{
-		rr(a, b);
-		cost_a--;
-		cost_b--;
-	}
-	while (cost_a < 0 && cost_b < 0)
-	{
-		rrr(a, b);
-		cost_a++;
-		cost_b++;
-	}
-	while (cost_a > 0)
-	{
-		ra(a, 0);
-		cost_a--;
-	}
-	while (cost_a < 0)
-	{
-		rra(a, 0);
-		cost_a++;
-	}
-	while (cost_b > 0)
-	{
-		rb(b, 0);
-		cost_b--;
-	}
-	while (cost_b < 0)
-	{
-		rrb(b, 0);
-		cost_b++;
-	}
-	pa(a, b);
 }
 
 void	free_stack(t_stack **stack)
@@ -272,53 +230,6 @@ void ft_beggin_sorting(t_stack **a, t_stack **b)
 
 //672 4979
 //640 4527
-
-void	free_split(char **split)
-{
-	int	i = 0;
-
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
-int	ft_input_check_one_arg(char *argv, t_stack **a)
-{
-	char	**split;
-	int		i;
-	long	num;
-	t_stack	*last;
-	t_stack	*new_node;
-
-	last = NULL;
-	split = ft_split(argv, ' ');
-	if (!split)
-		return (ft_printf("Error_split\n"), 1);
-	i = 0;
-	while (split[i])
-	{
-		if (!ft_num_check(split[i]))
-			return (ft_printf("Error_input\n"), free_split(split), 1);
-		num = ft_long_atoi(split[i]);
-		if (num > 2147483647 || num < -2147483648)
-			return (ft_printf("Error_input\n"), free_split(split), 1);
-		ft_appeared_before(*a, num);
-		new_node = create_node(num);
-		if (!new_node)
-			return (ft_printf("Error_not a new node\n"), free_split(split), 1);
-		if (!(*a))
-			*a = new_node;
-		else
-			last->next = new_node;
-		last = new_node;
-		i++;
-	}
-	free_split(split);
-	return (0);
-}
 
 //./push_swap 792517 236241 567811 30810 366999 539143 910778 832234 720003 655380 474070 997208 382154 214190 829348 643905 430156 270029 197359 351947 371271 143473 268608 715651 493912 232139 571785 966861 729703 796877 28720 834011 370663 877194 550184 63741 72723 274193 733545 917691 600405 28023 945957 410561 703404 349812 660100 3603 796175 939339 594959 490335 203874 545153 885040 995091 5653 388292 303316 134584 394658 594311 694238 538200 922386 697678 697235 299804 370725 854701 271054 154142 865561 225155 947099 149227 247248 932833 337814 500627 659762 164418 632377 892638 819182 610098 718253 381574 206783 126821 691028 847931 115220 731102 625407 607510 640003 657586 656466 593077 | wc -l
 int	main(int argc, char **argv)

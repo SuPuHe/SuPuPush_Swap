@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 10:50:51 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 13:55:55 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/29 14:56:10 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ t_stack	*create_node(long value);
 void	ft_appeared_before(t_stack *a, int num);
 int		ft_num_check(char	*s);
 int		ft_input_check(int argc, char **argv, t_stack **a);
+int		ft_input_check_one_arg(char *argv, t_stack **a);
 
 //helpers
 void	print_stack(t_stack *a, t_stack *b);

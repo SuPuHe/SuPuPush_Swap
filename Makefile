@@ -6,7 +6,7 @@
 #    By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/18 10:55:38 by omizin            #+#    #+#              #
-#    Updated: 2025/04/29 13:56:35 by omizin           ###   ########.fr        #
+#    Updated: 2025/04/29 16:27:08 by omizin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,7 +32,7 @@ CFLAGS = -Wall -Wextra $(INCLUDE)
 RM = rm -rf
 
 SRCS = push_swap.c swap_moves.c rotation_moves.c input_parsing.c helpers.c \
-		sorting_helpers.c
+		sorting_helpers.c input_with_one_argc.c sorting.c
 
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 
