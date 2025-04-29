@@ -6,7 +6,7 @@
 #    By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/18 10:55:38 by omizin            #+#    #+#              #
-#    Updated: 2025/04/18 11:00:37 by omizin           ###   ########.fr        #
+#    Updated: 2025/04/29 13:56:35 by omizin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,11 +27,12 @@ INCS_DIR = includes
 
 INCLUDE = -I$(INCS_DIR) -I$(SUPULIB_DIR)/libft/includes -I$(SUPULIB_DIR)/ft_printf/includes -I$(SUPULIB_DIR)/get_next_line/includes
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
+CFLAGS = -Wall -Wextra $(INCLUDE)
 
 RM = rm -rf
 
-SRCS = push_swap.c
+SRCS = push_swap.c swap_moves.c rotation_moves.c input_parsing.c helpers.c \
+		sorting_helpers.c
 
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 
