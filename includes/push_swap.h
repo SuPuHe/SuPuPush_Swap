@@ -31,6 +31,20 @@ typedef struct s_cost
 	t_stack	*node;
 }	t_cost;
 
+typedef struct s_sort_info
+{
+	int	median;
+	int	total;
+	int	*pushed;
+	int	*sorted_array;
+}	t_sort_info;
+
+typedef struct s_chunk_info
+{
+	int	top_dist;
+	int	size;
+}	t_chunk_info;
+
 //moves
 void	sa(t_stack **a);
 void	sb(t_stack **b);
@@ -56,6 +70,7 @@ void	print_stack(t_stack *a, t_stack *b);
 int		ft_is_sorted(t_stack *stack);
 int		ft_stack_size(t_stack *stack);
 int		find_min_index(t_stack *stack);
+void	free_stack(t_stack **stack);
 
 //sorting helpers
 void	ft_sort_array(int *arr, int size);
@@ -67,5 +82,6 @@ void	push_back_to_a(t_stack **a, t_stack **b);
 //sorting
 t_cost	calculate_cost(t_stack *a, t_stack *b);
 void	do_moves(t_stack **a, t_stack **b, t_cost move);
+int		find_insert_position(t_stack *a, int num);
 
 #endif

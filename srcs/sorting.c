@@ -58,3 +58,66 @@ void	do_moves(t_stack **a, t_stack **b, t_cost move)
 	do_moves_alone(a, b, cost_a, cost_b);
 	pa(a, b);
 }
+
+static int	return_insert_position(t_stack *a, int num, int min, int max)
+{
+	t_stack	*tmp;
+	int		pos;
+
+	pos = 0;
+	if (num < min || num > max)
+	{
+		tmp = a;
+		while (tmp)
+		{
+			if (tmp->value == max)
+				break;
+			pos++;
+			tmp = tmp->next;
+		}
+		return (pos + 1);
+	}
+	tmp = a;
+	while (tmp && tmp->next)
+	{
+		if (num > tmp->value && num < tmp->next->value)
+			return (pos + 1);
+		tmp = tmp->next;
+		pos++;
+	}
+	return (0);
+}
+
+int	find_insert_position(t_stack *a, int num)
+{
+	t_stack	*tmp;
+	int		pos;
+	int		min;
+	int		max;
+
+	tmp = a;
+	min = tmp->value;
+	max = tmp->value;
+	while (tmp)
+	{
+		if (tmp->value < min)
+			min = tmp->value;
+		if (tmp->value > max)
+			max = tmp->value;
+		tmp = tmp->next;
+	}
+	pos = return_insert_position(a, num, min, max);
+	return (pos);
+}
+
+void	free_stack(t_stack **stack)
+{
+	t_stack	*tmp;
+
+	while (*stack)
+	{
+		tmp = *stack;
+		*stack = (*stack)->next;
+		free(tmp);
+	}
+}
