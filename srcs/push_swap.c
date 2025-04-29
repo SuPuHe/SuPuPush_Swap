@@ -12,212 +12,136 @@
 
 #include "push_swap.h"
 
-int	find_insert_position(t_stack *a, int num)
+t_sort_info	init_sort_info(int *sorted_array, int total, int *pushed)
 {
-	t_stack	*current;
-	t_stack	*tmp;
-	int		pos;
-	int		min;
-	int		max;
+	t_sort_info	info;
 
-	pos = 0;
-	current = a;
-	tmp = a;
-	min = tmp->value;
-	max = tmp->value;
-	while (tmp)
-	{
-		if (tmp->value < min)
-			min = tmp->value;
-		if (tmp->value > max)
-			max = tmp->value;
-		tmp = tmp->next;
-	}
-	if (num < min || num > max)
-	{
-		pos = 0;
-		tmp = a;
-		while (tmp)
-		{
-			if (tmp->value == max)
-				break;
-			pos++;
-			tmp = tmp->next;
-		}
-		return (pos + 1);
-	}
-	pos = 0;
-	current = a;
-	while (current && current->next)
-	{
-		if (num > current->value && num < current->next->value)
-			return (pos + 1);
-		current = current->next;
-		pos++;
-	}
-	return (0);
+	info.sorted_array = sorted_array;
+	info.total = total;
+	info.pushed = pushed;
+	info.median = sorted_array[total / 2];
+	return (info);
 }
 
-t_cost	calculate_cost(t_stack *a, t_stack *b)
+void	handle_first_half(t_stack **a, t_stack **b, t_sort_info info)
 {
-	t_stack	*current_b;
-	t_cost	best_move;
-	int		b_size;
-	int		a_size;
-	int		idx_b;
-
-	current_b = b;
-	b_size = ft_stack_size(b);
-	a_size = ft_stack_size(a);
-	idx_b = 0;
-	best_move.total = 2147483647;
-	while (current_b)
+	while (*a && *(info.pushed) < info.total / 2)
 	{
-		int cost_b;
-		if (idx_b <= b_size / 2)
-			cost_b = idx_b;
-		else
-			cost_b = -(b_size - idx_b);
-		int pos_in_a = find_insert_position(a, current_b->value);
-		int cost_a;
-		if (pos_in_a <= a_size / 2)
-			cost_a = pos_in_a;
-		else
-			cost_a = -(a_size - pos_in_a);
-		int total_a;
-		if (cost_a < 0)
-			total_a = -cost_a;
-		else
-			total_a = cost_a;
-		int total_b;
-		if (cost_b < 0)
-			total_b = -cost_b;
-		else
-			total_b = cost_b;
-		int total = total_a + total_b;
-		if (cost_a > 0 && cost_b > 0)
-		{
-			if (total > total_a + total_b)
-				total = total_a + total_b;
-		}
-		if (cost_a < 0 && cost_b < 0)
-		{
-			if (total > total_a + total_b)
-				total = total_a + total_b;
-		}
-		if (total < best_move.total)
-		{
-			best_move.total = total;
-			best_move.cost_a = cost_a;
-			best_move.cost_b = cost_b;
-			best_move.node = current_b;
-		}
-		idx_b++;
-		current_b = current_b->next;
-	}
-	return (best_move);
-}
-
-void	free_stack(t_stack **stack)
-{
-	t_stack	*tmp;
-
-	while (*stack)
-	{
-		tmp = *stack;
-		*stack = (*stack)->next;
-		free(tmp);
-	}
-}
-
-void ft_beggin_sorting(t_stack **a, t_stack **b)
-{
-	int	*sorted_array;
-	int	chunk_size;
-	int	chunk_min;
-	int	chunk_max;
-	int	total;
-	int	pushed;
-	int	i;
-	int	median;
-
-	if (ft_is_sorted(*a))
-		return;
-	total = ft_stack_size(*a);
-	if (!*a || !(sorted_array = stack_to_array(*a, total)))
-		return;
-	ft_sort_array(sorted_array, total);
-	median = sorted_array[total / 2];
-	if (total <= 100)
-		chunk_size = total / 5;
-	else if (total <= 500)
-		chunk_size = total / 8;
-	else
-		chunk_size = total / 11;
-	pushed = 0;
-	i = 0;
-	while (*a && pushed < total / 2)
-	{
-		if ((*a)->value < median)
+		if ((*a)->value < info.median)
 		{
 			pb(a, b);
-			pushed++;
-			if (*b && (*b)->value < sorted_array[total / 4])
+			(*(info.pushed))++;
+			if (*b && (*b)->value < info.sorted_array[info.total / 4])
 				rb(b, 0);
 		}
 		else
 			ra(a, 0);
 	}
-	pushed = total / 2;
-	while (*a && pushed < total - 3)
+}
+
+int	find_top_distance(t_stack *a, int min, int max)
+{
+	t_stack	*tmp;
+	int		dist;
+
+	tmp = a;
+	dist = 0;
+	while (tmp)
 	{
-		chunk_min = sorted_array[i];
-		if (i + chunk_size - 1 >= total)
-			chunk_max = sorted_array[total - 1];
+		if (tmp->value >= min && tmp->value <= max)
+			return (dist);
+		dist++;
+		tmp = tmp->next;
+	}
+	return (-1);
+}
+
+void	move_and_push(t_stack **a, t_stack **b, t_chunk_info cinfo, t_sort_info sinfo)
+{
+	int	i;
+
+	if (cinfo.top_dist <= cinfo.size / 2)
+	{
+		i = cinfo.top_dist;
+		while (i-- > 0)
+			ra(a, 0);
+	}
+	else
+	{
+		i = cinfo.size - cinfo.top_dist;
+		while (i-- > 0)
+			rra(a, 0);
+	}
+	pb(a, b);
+	(*(sinfo.pushed))++;
+	if (*(sinfo.pushed) >= sinfo.total - 3)
+		return;
+	if (*b && (*b)->value < sinfo.median &&
+		(*b)->next && (*b)->value < (*b)->next->value)
+		rb(b, 0);
+}
+
+void	handle_remaining_chunks(t_stack **a, t_stack **b, t_sort_info info, int chunk_size)
+{
+	int				i;
+	int				chunk_min;
+	int				chunk_max;
+	int				top_dist;
+	t_chunk_info	cinfo;
+
+	i = 0;
+	while (*a && *(info.pushed) < info.total - 3)
+	{
+		chunk_min = info.sorted_array[i];
+		if (i + chunk_size - 1 >= info.total)
+			chunk_max = info.sorted_array[info.total - 1];
 		else
-			chunk_max = sorted_array[i + chunk_size - 1];
+			chunk_max = info.sorted_array[i + chunk_size - 1];
 		while (*a)
 		{
-			int found = 0;
-			int size = ft_stack_size(*a);
-			t_stack *tmp = *a;
-			int top_dist = 0;
-			while (tmp)
-			{
-				if (tmp->value >= chunk_min && tmp->value <= chunk_max)
-				{
-					found = 1;
-					break;
-				}
-				top_dist++;
-				tmp = tmp->next;
-			}
-			if (!found)
+			top_dist = find_top_distance(*a, chunk_min, chunk_max);
+			if (top_dist == -1)
 				break;
-			if (top_dist <= size / 2)
-			{
-				while (top_dist-- > 0 && *a)
-					ra(a, 0);
-			}
-			else
-			{
-				top_dist = size - top_dist;
-				while (top_dist-- > 0 && *a)
-					rra(a, 0);
-			}
-			if (*a)
-			{
-				pb(a, b);
-				pushed++;
-				if (pushed >= total - 3)
-					break;
-				if (*b && (*b)->value < median &&
-					(*b)->next && (*b)->value < (*b)->next->value)
-					rb(b, 0);
-			}
+			cinfo.top_dist = top_dist;
+			cinfo.size = ft_stack_size(*a);
+			move_and_push(a, b, cinfo, info);
+			if (*(info.pushed) >= info.total - 3)
+				break;
 		}
 		i += chunk_size;
 	}
+}
+
+int	get_chunk_size(int total)
+{
+	if (total <= 100)
+		return (total / 5);
+	else if (total <= 500)
+		return (total / 8);
+	else
+		return (total / 11);
+}
+
+void	ft_beggin_sorting(t_stack **a, t_stack **b)
+{
+	int			*sorted_array;
+	int			chunk_size;
+	int			total;
+	int			pushed;
+	t_sort_info	info;
+
+	if (!*a || ft_is_sorted(*a))
+		return;
+	total = ft_stack_size(*a);
+	sorted_array = stack_to_array(*a, total);
+	if (!sorted_array)
+		return;
+	ft_sort_array(sorted_array, total);
+	chunk_size = get_chunk_size(total);
+	pushed = 0;
+	info = init_sort_info(sorted_array, total, &pushed);
+	handle_first_half(a, b, info);
+	handle_remaining_chunks(a, b, info, chunk_size);
 	free(sorted_array);
 	if (*a && ft_stack_size(*a) == 3)
 		ft_sort_three(a);

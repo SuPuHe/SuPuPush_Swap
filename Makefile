@@ -27,12 +27,12 @@ INCS_DIR = includes
 
 INCLUDE = -I$(INCS_DIR) -I$(SUPULIB_DIR)/libft/includes -I$(SUPULIB_DIR)/ft_printf/includes -I$(SUPULIB_DIR)/get_next_line/includes
 CC = cc
-CFLAGS = -Wall -Wextra $(INCLUDE)
+CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
 
 RM = rm -rf
 
 SRCS = push_swap.c swap_moves.c rotation_moves.c input_parsing.c helpers.c \
-		sorting_helpers.c input_with_one_argc.c sorting.c
+		sorting_helpers.c input_with_one_argc.c sorting.c calculating_sorting.c
 
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 
