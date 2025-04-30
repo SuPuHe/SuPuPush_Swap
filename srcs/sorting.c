@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 16:26:38 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 16:26:51 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/30 13:47:41 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,18 @@ void	do_moves(t_stack **a, t_stack **b, t_cost move)
 	cost_b = move.cost_b;
 	while (cost_a > 0 && cost_b > 0)
 	{
-		rr(a, b);
+		rr(a, b, 0);
 		cost_a--;
 		cost_b--;
 	}
 	while (cost_a < 0 && cost_b < 0)
 	{
-		rrr(a, b);
+		rrr(a, b, 0);
 		cost_a++;
 		cost_b++;
 	}
 	do_moves_alone(a, b, cost_a, cost_b);
-	pa(a, b);
+	pa(a, b, 0);
 }
 
 static int	return_insert_position(t_stack *a, int num, int min, int max)
@@ -71,7 +71,7 @@ static int	return_insert_position(t_stack *a, int num, int min, int max)
 		while (tmp)
 		{
 			if (tmp->value == max)
-				break;
+				break ;
 			pos++;
 			tmp = tmp->next;
 		}

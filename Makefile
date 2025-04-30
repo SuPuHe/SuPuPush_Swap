@@ -6,7 +6,7 @@
 #    By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/18 10:55:38 by omizin            #+#    #+#              #
-#    Updated: 2025/04/29 16:27:08 by omizin           ###   ########.fr        #
+#    Updated: 2025/04/30 13:00:56 by omizin           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ RED			= \033[1;31m		# Bright red
 CYAN		= \033[1;36m		# Bright cyan
 
 NAME = push_swap
+CHEKER_NAME = checker
 
 SUPULIB_DIR = SuPuLib
 SUPULIB_REPO = https://github.com/SuPuHe/SuPuLib.git
@@ -31,14 +32,23 @@ CFLAGS = -Wall -Wextra -Werror $(INCLUDE)
 
 RM = rm -rf
 
-SRCS = push_swap.c swap_moves.c rotation_moves.c input_parsing.c helpers.c \
-		sorting_helpers.c input_with_one_argc.c sorting.c calculating_sorting.c
+SRCS = swap_moves.c rotation_moves.c input_parsing.c helpers.c \
+		sorting_helpers.c input_with_one_argc.c sorting.c calculating_sorting.c main_sorting.c \
+		main_helpers.c
+
+MAIN_PUSH = push_swap.c
+
+CHEKER_SRCS = cheker.c
 
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
+MAIN_PUSH := $(addprefix $(SRCS_DIR)/, $(MAIN_PUSH))
+CHEKER_SRCS := $(addprefix $(SRCS_DIR)/, $(CHEKER_SRCS))
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
+MAIN_PUSH_OBJS = $(MAIN_PUSH:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
+CHEKER_OBJS = $(CHEKER_SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 
-all: $(SUPULIB_DIR)/SuPuLib.a $(NAME)
+all: $(SUPULIB_DIR)/SuPuLib.a $(NAME) $(CHEKER_NAME)
 
 $(SUPULIB_DIR):
 	@git clone $(SUPULIB_REPO) $(SUPULIB_DIR)
@@ -48,9 +58,13 @@ $(SUPULIB_DIR)/SuPuLib.a: | $(SUPULIB_DIR)
 	@$(MAKE) -C $(SUPULIB_DIR)
 
 # Compile push_swap
-$(NAME): $(SUPULIB_DIR)/SuPuLib.a $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(SUPULIB_DIR)/SuPuLib.a -o $(NAME)
+$(NAME): $(SUPULIB_DIR)/SuPuLib.a $(OBJS) $(MAIN_PUSH_OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(MAIN_PUSH_OBJS) $(SUPULIB_DIR)/SuPuLib.a -o $(NAME)
 	@echo "$(GREEN)push_swap compiled successfully$(RESET_COLOR)"
+
+$(CHEKER_NAME): $(SUPULIB_DIR)/SuPuLib.a $(CHEKER_OBJS) $(OBJS)
+	@$(CC) $(CFLAGS) $(CHEKER_OBJS) $(OBJS) $(SUPULIB_DIR)/SuPuLib.a -o $(CHEKER_NAME)
+	@echo "$(GREEN)cheker compiled successfully$(RESET_COLOR)"
 
 # Compile object files
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c | $(OBJS_DIR)
@@ -67,7 +81,7 @@ clean:
 	@echo "$(GREEN)Clean sucessfully$(RESET_COLOR)"
 
 fclean: clean
-	@$(RM) $(NAME)
+	@$(RM) $(NAME) $(CHEKER_NAME)
 	@$(MAKE) -C $(SUPULIB_DIR) fclean
 	@echo "$(GREEN)Fclean sucessfully$(RESET_COLOR)"
 
