@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:44:51 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 13:48:11 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/30 13:43:42 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,12 @@ void	print_stack(t_stack *a, t_stack *b)
 	}
 }
 
-void	rrr(t_stack **a, t_stack **b)
+void	rrr(t_stack **a, t_stack **b, int helper)
 {
 	rra(a, 1);
 	rrb(b, 1);
-	ft_printf("rrr\n");
+	if (helper == 0)
+		ft_printf("rrr\n");
 }
 
 int	ft_is_sorted(t_stack *stack)

@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 22:50:34 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 22:52:12 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/30 10:11:29 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ static int	combined_cost(int cost_a, int cost_b)
 	return (total_a + total_b);
 }
 
-static t_cost	calculate_cost_for_node(t_stack *a, t_stack *b, t_stack *node_b, int idx_b)
+static t_cost	calculate_cost_for_node(t_stack *a, t_stack *b,
+t_stack *node_b, int idx_b)
 {
 	t_cost	cost;
 	int		b_size;

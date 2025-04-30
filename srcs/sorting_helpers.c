@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:52:37 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 13:59:12 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/30 13:45:06 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,17 +64,17 @@ void	ft_sort_three(t_stack **a)
 	second = (*a)->next->value;
 	third = (*a)->next->next->value;
 	if (first > second && second < third && first < third)
-		sa(a);
+		sa(a, 0);
 	else if (first > second && second > third)
 	{
-		sa(a);
+		sa(a, 0);
 		rra(a, 0);
 	}
 	else if (first > second && second < third && first > third)
 		ra(a, 0);
 	else if (first < second && second > third && first < third)
 	{
-		sa(a);
+		sa(a, 0);
 		ra(a, 0);
 	}
 	else if (first < second && second > third && first > third)

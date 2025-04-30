@@ -6,13 +6,13 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 10:22:02 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 13:43:42 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/30 13:43:20 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sa(t_stack **a)
+void	sa(t_stack **a, int helper)
 {
 	t_stack	*first;
 	t_stack	*second;
@@ -24,10 +24,11 @@ void	sa(t_stack **a)
 	first->next = second->next;
 	second->next = first;
 	*a = second;
-	ft_printf("sa\n");
+	if (helper == 0)
+		ft_printf("sa\n");
 }
 
-void	sb(t_stack **b)
+void	sb(t_stack **b, int helper)
 {
 	t_stack	*first;
 	t_stack	*second;
@@ -39,17 +40,19 @@ void	sb(t_stack **b)
 	first->next = second->next;
 	second->next = first;
 	*b = second;
-	ft_printf("sb\n");
+	if (helper == 0)
+		ft_printf("sb\n");
 }
 
-void	ss(t_stack **a, t_stack **b)
+void	ss(t_stack **a, t_stack **b, int helper)
 {
-	sa(a);
-	sb(b);
-	ft_printf("ss\n");
+	sa(a, 1);
+	sb(b, 1);
+	if (helper == 0)
+		ft_printf("ss\n");
 }
 
-void	pa(t_stack **a, t_stack **b)
+void	pa(t_stack **a, t_stack **b, int helper)
 {
 	t_stack	*temp;
 
@@ -59,10 +62,11 @@ void	pa(t_stack **a, t_stack **b)
 	*b = (*b)->next;
 	temp->next = *a;
 	*a = temp;
-	ft_printf("pa\n");
+	if (helper == 0)
+		ft_printf("pa\n");
 }
 
-void	pb(t_stack **a, t_stack **b)
+void	pb(t_stack **a, t_stack **b, int helper)
 {
 	t_stack	*temp;
 
@@ -72,5 +76,6 @@ void	pb(t_stack **a, t_stack **b)
 	*a = (*a)->next;
 	temp->next = *b;
 	*b = temp;
-	ft_printf("pb\n");
+	if (helper == 0)
+		ft_printf("pb\n");
 }
