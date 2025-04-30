@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/30 12:26:38 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/30 14:16:56 by omizin           ###   ########.fr       */
+/*   Updated: 2025/04/30 16:18:14 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 int	ft_check_moves(char *str)
 {
 	if (
-		ft_strncmp(str, "sa\n", 3) == 0 ||
-		ft_strncmp(str, "sb\n", 3) == 0 ||
-		ft_strncmp(str, "ss\n", 3) == 0 ||
-		ft_strncmp(str, "pa\n", 3) == 0 ||
-		ft_strncmp(str, "pb\n", 3) == 0 ||
-		ft_strncmp(str, "ra\n", 3) == 0 ||
-		ft_strncmp(str, "rb\n", 3) == 0 ||
-		ft_strncmp(str, "rr\n", 3) == 0 ||
-		ft_strncmp(str, "rra\n", 4) == 0 ||
-		ft_strncmp(str, "rrb\n", 4) == 0 ||
-		ft_strncmp(str, "rrr\n", 4) == 0
+		ft_strncmp(str, "sa\n", 3) == 0
+		|| ft_strncmp(str, "sb\n", 3) == 0
+		|| ft_strncmp(str, "ss\n", 3) == 0
+		|| ft_strncmp(str, "pa\n", 3) == 0
+		|| ft_strncmp(str, "pb\n", 3) == 0
+		|| ft_strncmp(str, "ra\n", 3) == 0
+		|| ft_strncmp(str, "rb\n", 3) == 0
+		|| ft_strncmp(str, "rr\n", 3) == 0
+		|| ft_strncmp(str, "rra\n", 4) == 0
+		|| ft_strncmp(str, "rrb\n", 4) == 0
+		|| ft_strncmp(str, "rrr\n", 4) == 0
 	)
 		return (0);
 	return (ft_printf("Error\n"), 1);
@@ -75,7 +75,6 @@ void	ft_get_move(t_stack **a, t_stack **b)
 		if (!line)
 			break ;
 	}
-	//free(line);
 }
 
 int	main(int argc, char **argv)
