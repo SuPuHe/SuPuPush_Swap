@@ -23,6 +23,14 @@ t_sort_info	init_sort_info(int *sorted_array, int total, int *pushed)
 	return (info);
 }
 
+/**
+ * @brief This function handles the first half of the sorting process.
+ * It pushes elements from stack a to stack b based on their value compared to the median.
+ * If the pushed element is less than the first quarter of the sorted array, it rotates stack b.
+ * @param a The pointer to stack a.
+ * @param b The pointer to stack b.
+ * @param info The sorting information structure containing median and total elements.
+ */
 void	handle_first_half(t_stack **a, t_stack **b, t_sort_info info)
 {
 	while (*a && *(info.pushed) < info.total / 2)

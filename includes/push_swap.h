@@ -61,7 +61,7 @@ void		rrr(t_stack **a, t_stack **b, int helper);
 //input cheks
 long		ft_long_atoi(const char *string);
 t_stack		*create_node(long value);
-void		ft_appeared_before(t_stack *a, int num);
+int			ft_appeared_before(t_stack *a, int num);
 int			ft_num_check(char	*s);
 int			ft_input_check(int argc, char **argv, t_stack **a);
 int			ft_input_check_one_arg(char *argv, t_stack **a);

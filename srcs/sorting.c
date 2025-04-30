@@ -36,6 +36,14 @@ static void	do_moves_alone(t_stack **a, t_stack **b, int cost_a, int cost_b)
 	}
 }
 
+/**
+ * @brief This function performs the moves to sort the stacks based on the calculated costs.
+ * It first handles the combined moves (rr and rrr) and then performs the individual moves for each stack.
+ * Finally, it pushes the top element from stack b to stack a.
+ * @param a The pointer to stack a.
+ * @param b The pointer to stack b.
+ * @param move The cost structure containing the calculated costs for both stacks.
+ */
 void	do_moves(t_stack **a, t_stack **b, t_cost move)
 {
 	int	cost_a;
@@ -88,6 +96,15 @@ static int	return_insert_position(t_stack *a, int num, int min, int max)
 	return (0);
 }
 
+/**
+ * @brief This function finds the position to insert a number in stack a.
+ * It checks if the number is less than the minimum or greater than the maximum value in stack a.
+ * If so, it returns the position to insert it at the end of the stack.
+ * Otherwise, it finds the correct position to insert it in sorted order.
+ * @param a The pointer to stack a.
+ * @param num The number to be inserted.
+ * @return The position to insert the number in stack a.
+ */
 int	find_insert_position(t_stack *a, int num)
 {
 	t_stack	*tmp;
