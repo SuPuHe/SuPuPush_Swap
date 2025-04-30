@@ -38,7 +38,7 @@ SRCS = swap_moves.c rotation_moves.c input_parsing.c helpers.c \
 
 MAIN_PUSH = push_swap.c
 
-CHEKER_SRCS = cheker.c
+CHEKER_SRCS = checker.c
 
 SRCS := $(addprefix $(SRCS_DIR)/, $(SRCS))
 MAIN_PUSH := $(addprefix $(SRCS_DIR)/, $(MAIN_PUSH))

@@ -57,7 +57,14 @@ void	ft_execute_move(char *str, t_stack **a, t_stack **b)
 		rrr(a, b, 1);
 }
 
-void	ft_get_move(t_stack **a, t_stack **b)
+/**
+ * @brief This function reads moves from the standard input and executes them
+ * on the given stacks.
+ * @param a The pointer to stack a.
+ * @param b The pointer to stack b.
+ * @return 1 if an error occurs, otherwise 0.
+ */
+int	ft_get_move(t_stack **a, t_stack **b)
 {
 	char	*line;
 
@@ -67,7 +74,7 @@ void	ft_get_move(t_stack **a, t_stack **b)
 		if (ft_check_moves(line) == 1)
 		{
 			free(line);
-			exit (1);
+			return (1);
 		}
 		ft_execute_move(line, a, b);
 		free(line);
@@ -75,6 +82,7 @@ void	ft_get_move(t_stack **a, t_stack **b)
 		if (!line)
 			break ;
 	}
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -89,11 +97,12 @@ int	main(int argc, char **argv)
 	else if (argc == 2)
 	{
 		if (ft_input_check_one_arg(argv[1], &a) == 1)
-			return (1);
+			return (free_stack(&a), free_stack(&b), 1);
 	}
 	else if (ft_input_check(argc, argv, &a) == 1)
-		return (1);
-	ft_get_move(&a, &b);
+		return (free_stack(&a), free_stack(&b), 1);
+	if (ft_get_move(&a, &b) == 1)
+		return (free_stack(&a), free_stack(&b), 1);
 	if (ft_is_sorted(a) == 1 && ft_stack_size(b) == 0)
 		ft_printf("OK\n");
 	else

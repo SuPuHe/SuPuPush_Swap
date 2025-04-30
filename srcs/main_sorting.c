@@ -12,6 +12,15 @@
 
 #include "push_swap.h"
 
+/**
+ * @brief This function finds the top distance of the first element in stack a
+ * that is within the specified range (min to max).
+ * It returns the distance from the top of the stack to that element.
+ * @param a The pointer to stack a.
+ * @param min The minimum value of the range.
+ * @param max The maximum value of the range.
+ * @return The distance from the top of the stack to the first element within the range.
+ */
 static int	find_top_distance(t_stack *a, int min, int max)
 {
 	t_stack	*tmp;
@@ -29,6 +38,14 @@ static int	find_top_distance(t_stack *a, int min, int max)
 	return (-1);
 }
 
+/**
+ * @brief This function moves the top element of stack a to stack b if it is within the chunk range.
+ * It also rotates stack a if the top element is not within the chunk range.
+ * @param a The pointer to stack a.
+ * @param b The pointer to stack b.
+ * @param cinfo The chunk information structure containing top distance and size.
+ * @param sinfo The sorting information structure containing median and total elements.
+ */
 static void	move_and_push(t_stack **a, t_stack **b,
 t_chunk_info cinfo, t_sort_info sinfo)
 {
@@ -66,6 +83,15 @@ static int	find_chunk_max(int i, int chunk_size, t_sort_info info)
 	return (chunk_max);
 }
 
+/**
+ * @brief This function handles the remaining chunks of elements in stack a.
+ * It pushes elements from stack a to stack b based on their value compared to the chunk range.
+ * It continues until all elements are sorted or pushed back to stack a.
+ * @param a The pointer to stack a.
+ * @param b The pointer to stack b.
+ * @param info The sorting information structure containing sorted array and total elements.
+ * @param chunk_size The size of each chunk for sorting.
+ */
 static void	handle_remaining_chunks(t_stack **a, t_stack **b,
 t_sort_info info, int chunk_size)
 {
@@ -95,6 +121,13 @@ t_sort_info info, int chunk_size)
 	}
 }
 
+/**
+ * @brief This function begins the sorting process for the given stacks.
+ * It checks if stack a is empty or already sorted, and if not, it sorts the elements
+ * by pushing them to stack b and then back to stack a.
+ * @param a The pointer to stack a.
+ * @param b The pointer to stack b.
+ */
 void	ft_beggin_sorting(t_stack **a, t_stack **b)
 {
 	int			*sorted_array;

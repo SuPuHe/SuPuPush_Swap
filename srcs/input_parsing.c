@@ -49,17 +49,18 @@ t_stack	*create_node(long value)
 	return (new);
 }
 
-void	ft_appeared_before(t_stack *a, int num)
+int	ft_appeared_before(t_stack *a, int num)
 {
 	while (a != NULL)
 	{
 		if (a->value == num)
 		{
 			ft_printf("Error_num appeared before\n");
-			exit(1);
+			return (1);
 		}
 		a = a->next;
 	}
+	return (0);
 }
 
 int	ft_num_check(char	*s)
@@ -71,7 +72,13 @@ int	ft_num_check(char	*s)
 	else
 		return (0);
 }
-
+/**
+ * @brief Checks if the input is valid and creates a linked list of nodes.
+ * @param argc The number of arguments.
+ * @param argv The array of arguments.
+ * @param a Pointer to the head of the linked list.
+ * @return 0 on success, 1 on error.
+*/
 int	ft_input_check(int argc, char **argv, t_stack **a)
 {
 	int		i;
@@ -86,7 +93,8 @@ int	ft_input_check(int argc, char **argv, t_stack **a)
 		num = ft_long_atoi(argv[i]);
 		if ((num > 2147483647 || num < -2147483648) || !(ft_num_check(argv[i])))
 			return (ft_printf("Error_input\n"), 1);
-		ft_appeared_before(*a, num);
+		if (ft_appeared_before(*a, num) == 1)
+			return (1);
 		new_node = create_node(num);
 		if (!new_node)
 			return (ft_printf("Error_not a new node\n"), 1);

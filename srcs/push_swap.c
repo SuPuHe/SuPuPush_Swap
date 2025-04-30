@@ -24,10 +24,10 @@ int	main(int argc, char **argv)
 	else if (argc == 2)
 	{
 		if (ft_input_check_one_arg(argv[1], &a) == 1)
-			return (1);
+			return (free_stack(&a), free_stack(&b), 1);
 	}
 	else if (ft_input_check(argc, argv, &a) == 1)
-		return (1);
+		return (free_stack(&a), free_stack(&b), 1);
 	ft_beggin_sorting(&a, &b);
 	free_stack(&a);
 	free_stack(&b);

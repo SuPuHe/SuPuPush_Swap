@@ -25,19 +25,28 @@ static void	free_split(char **split)
 	free(split);
 }
 
-static void	ft_input_node_create(t_stack **a, int num, char **split)
+/**
+ * @brief This function creates a new node with the given number and adds it to the end of the stack.
+ * It also checks if the number has already appeared in the stack.
+ * @param a The pointer to the stack where the new node will be added.
+ * @param num The number to be added to the stack.
+ * @param split The array of strings containing the input numbers.
+ * @return 0 if successful, 1 if there is an error.
+*/
+static int	ft_input_node_create(t_stack **a, int num, char **split)
 {
 	t_stack	*last;
 	t_stack	*new_node;
 
 	last = NULL;
-	ft_appeared_before(*a, num);
+	if (ft_appeared_before(*a, num) == 1)
+		return (1);
 	new_node = create_node(num);
 	if (!new_node)
 	{
 		ft_printf("Error_not a new node\n");
 		free_split(split);
-		exit(1);
+		return (1);
 	}
 	if (!(*a))
 		*a = new_node;
@@ -48,8 +57,16 @@ static void	ft_input_node_create(t_stack **a, int num, char **split)
 			last = last->next;
 		last->next = new_node;
 	}
+	return (0);
 }
 
+/**
+ * @brief This function checks if the input is valid when there is only one argument.
+ * It splits the argument into numbers, checks if they are valid integers, and creates nodes in the stack.
+ * @param argv The input string containing numbers separated by spaces.
+ * @param a The pointer to the stack where the numbers will be stored.
+ * @return 0 if successful, 1 if there is an error.
+ */
 int	ft_input_check_one_arg(char *argv, t_stack **a)
 {
 	char	**split;
@@ -67,7 +84,8 @@ int	ft_input_check_one_arg(char *argv, t_stack **a)
 		num = ft_long_atoi(split[i]);
 		if (num > 2147483647 || num < -2147483648)
 			return (ft_printf("Error_input\n"), free_split(split), 1);
-		ft_input_node_create(a, num, split);
+		if (ft_input_node_create(a, num, split) == 1)
+			return (free_split(split), 1);
 		i++;
 	}
 	free_split(split);
