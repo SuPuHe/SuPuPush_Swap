@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 14:55:41 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 14:57:39 by omizin           ###   ########.fr       */
+/*   Updated: 2025/05/01 11:53:52 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,9 @@ static void	free_split(char **split)
 }
 
 /**
- * @brief This function creates a new node with the given number and adds it to the end of the stack.
- * It also checks if the number has already appeared in the stack.
+ * @brief This function creates a new node with the given number and
+ * adds it to the end of the stack. It also checks if the number has
+ * already appeared in the stack.
  * @param a The pointer to the stack where the new node will be added.
  * @param num The number to be added to the stack.
  * @param split The array of strings containing the input numbers.
@@ -61,8 +62,9 @@ static int	ft_input_node_create(t_stack **a, int num, char **split)
 }
 
 /**
- * @brief This function checks if the input is valid when there is only one argument.
- * It splits the argument into numbers, checks if they are valid integers, and creates nodes in the stack.
+ * @brief This function checks if the input is valid when there is
+ * only one argument. It splits the argument into numbers, checks
+ * if they are valid integers, and creates nodes in the stack.
  * @param argv The input string containing numbers separated by spaces.
  * @param a The pointer to the stack where the numbers will be stored.
  * @return 0 if successful, 1 if there is an error.
