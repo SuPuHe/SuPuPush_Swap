@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 22:50:34 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/30 10:11:29 by omizin           ###   ########.fr       */
+/*   Updated: 2025/05/01 11:52:58 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,10 @@ t_stack *node_b, int idx_b)
 }
 
 /**
- * @brief This function calculates the cost for each node in stack b and returns the best move.
- * It iterates through each node in stack b, calculates the cost for that node,
- * and keeps track of the best move with the lowest cost.
+ * @brief This function calculates the cost for each node in stack b and
+ * returns the best move. It iterates through each node in stack b,
+ * calculates the cost for that node, and keeps track of the best
+ * move with the lowest cost.
  * @param a The pointer to stack a.
  * @param b The pointer to stack b.
  * @return The best move with the lowest cost.

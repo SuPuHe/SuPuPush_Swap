@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 13:39:54 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/29 13:42:56 by omizin           ###   ########.fr       */
+/*   Updated: 2025/05/01 11:53:10 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	ft_num_check(char	*s)
 	else
 		return (0);
 }
+
 /**
  * @brief Checks if the input is valid and creates a linked list of nodes.
  * @param argc The number of arguments.

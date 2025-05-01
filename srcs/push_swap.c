@@ -6,7 +6,7 @@
 /*   By: omizin <omizin@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 10:52:41 by omizin            #+#    #+#             */
-/*   Updated: 2025/04/30 16:18:35 by omizin           ###   ########.fr       */
+/*   Updated: 2025/05/01 11:28:28 by omizin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	main(int argc, char **argv)
 	b = NULL;
 	a = NULL;
 	if (argc < 2)
-		return (ft_printf("Error_less then 2 argc\n"), 1);
+		return (0);
 	else if (argc == 2)
 	{
 		if (ft_input_check_one_arg(argv[1], &a) == 1)
